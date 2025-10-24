@@ -1,3 +1,4 @@
+/*
 import React, { useState, useEffect } from 'react'; // Importa React y hooks
 import axios from 'axios'; // Importa axios para las peticiones HTTP
 

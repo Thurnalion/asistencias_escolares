@@ -63,8 +63,6 @@ function Alumnos() {
   }, [selectedEstudiante]); // Depende de 'selectedEstudiante'
 
   return (
-    // ¡OJO! Este div ya no tiene la clase 'contenedores' ni el título 'Alumnos'.
-    // Esos elementos ahora están en App.js. Aquí solo va el contenido interno.
     <>
       <p className="filtros">Año</p>
 

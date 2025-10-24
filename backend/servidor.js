@@ -9,6 +9,8 @@ app.use(express.json());
 // Importar el archivo de rutas de alumnos
 const alumnosRoutes = require('../src/routes/alumnosRoutes.js');
 
+const profesoresRoutes = require('../src/routes/profesoresRoutes.js'); // Importar el archivo de rutas de profesores (profesoresRoutes.js)
+
 // Configuración de la base de datos (se mantiene aquí, ya que es global)
 const db = mysql.createConnection({
   host: 'localhost',
@@ -26,9 +28,10 @@ db.connect((err) => {
 });
 
 // Usar el router de alumnos
-// Esto hará que todas las rutas de alumnosRoutes.js estén disponibles
+// Todas las rutas de alumnosRoutes.js estén disponibles
 // automáticamente bajo el prefijo '/'
-app.use('/', alumnosRoutes);
+app.use('/alumnos', alumnosRoutes);
+app.use('/profesores', profesoresRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {

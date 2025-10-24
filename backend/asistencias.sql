@@ -1,4 +1,5 @@
 use asistencias_escolares;
 
-select * from estudiantes;
 
+
+select * from asistencias_profesores;
