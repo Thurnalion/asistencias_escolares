@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 const Profesores = () => {
     // Estados para la lista de profesores, la carga, el error
-    const [profesores, setProfesores] = useState([]); // Lista principal
-    const [selectedProfesorId, setSelectedProfesorId] = useState(''); // Selección del filtro
-    const [asistencias, setAsistencias] = useState([]); // Resultados
-    
-    // Estados para la experiencia de usuario, seleccion y asistencias
+    const [profesores, setProfesores] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Estados para la selección y asistencias
+    const [selectedProfesorId, setSelectedProfesorId] = useState('');
+    const [asistencias, setAsistencias] = useState([]);
     const [asistenciasLoading, setAsistenciasLoading] = useState(false);
     
-    // Función para cargar TODOS los profesores
+    // Función para cargar TODOS los profesores (la que ya tenías)
     useEffect(() => {
         const URL = 'http://localhost:5000/profesores/todos';
         axios.get(URL)
@@ -24,19 +23,23 @@ const Profesores = () => {
                 setError("No se pudieron cargar los datos de los profesores.");
                 setLoading(false);
             });
-    }, []); 
+    }, []);
 
-    //Se ejecuta al seleccionar un profesor
+    // NUEVA FUNCIÓN: Se ejecuta al seleccionar un profesor
     const handleProfesorChange = (event) => {
         const id = event.target.value;
         setSelectedProfesorId(id);
-        setAsistencias([]); // Limpia la vista anterior
+        setAsistencias([]); // Limpiar asistencias anteriores
 
-        // Esto dispara el useEffect 2
+        if (id) {
+            fetchAsistencias(id);
+        }
     };
 
+    // NUEVA FUNCIÓN: Hace la petición de asistencias al backend
     const fetchAsistencias = (id) => {
         setAsistenciasLoading(true);
+        // Usa la nueva ruta con el ID del profesor
         const URL = `http://localhost:5000/profesores/${id}/asistencias`;
         
         axios.get(URL)
@@ -47,58 +50,39 @@ const Profesores = () => {
             .catch(err => {
                 console.error("Error al obtener asistencias:", err);
                 setAsistenciasLoading(false);
-                setAsistencias([]); // Deja vacío en caso de error
+                setAsistencias([{ estado: 'Error al cargar asistencias' }]);
             });
     };
 
-
-    // EFECTO 2: Carga de Asistencias al cambiar la selección (Dependencia: [selectedProfesorId])
-    useEffect(() => {
-        if (selectedProfesorId) {
-            fetchAsistencias(selectedProfesorId);
-        }
-    }, [selectedProfesorId]);
-
+    // Renderizado Condicional y Formulario
     if (loading) return <div className="loading">Cargando profesores...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="profesores-container">
-            {error && <div className="error">{error}</div>} 
-
-            <p className="filtros">Profesor</p> 
-            <div className="select-container"> 
-                <select 
-                    id="profesor-select" 
-                    value={selectedProfesorId} 
-                    onChange={handleProfesorChange}
-                    className="select"
-                >
-                    <option value="">Seleccionar Profesor</option> 
+            <div className="select-container">
+                <select id="profesor-select"value={selectedProfesorId} onChange={handleProfesorChange}>
+                    <option value="">-- Seleccionar --</option>
                     {profesores.map(profesor => (
-                        <option 
-                            key={profesor.id_profesor} 
-                            value={profesor.id_profesor}
-                        >
-                            {profesor.nombre} {profesor.apellido} 
+                        <option key={profesor.id_profesor} value={profesor.id_profesor}>
+                            {profesor.nombre} {profesor.apellido} ({profesor.nombre_clase})
                         </option>
                     ))}
                 </select>
             </div>
-            
-            {selectedProfesorId && (
-                <div className="asistencias-resultado">
-                    
-                    <p className="filtros">Estado</p>
 
+        
+            {selectedProfesorId && (
+                <div className="filtros">
+                    <p>Asistencias del Profesor</p>
                     {asistenciasLoading ? (
                         <p>Cargando asistencias...</p>
                     ) : (
                         asistencias.length > 0 ? (
+                            // Mapea y muestra todas las asistencias encontradas
                             <div className="lista-asistencias">
                                 {asistencias.map((a, index) => (
-                                    <p key={index}>
-                                        Día {index + 1}: <strong>{a.estado}</strong>
-                                    </p>
+                                    <p key={index}>Registro {index + 1}: <strong>{a.estado}</strong></p>
                                 ))}
                             </div>
                         ) : (
@@ -112,4 +96,4 @@ const Profesores = () => {
     );
 };
 
-export default Profesores;
+export default Profesores; 
