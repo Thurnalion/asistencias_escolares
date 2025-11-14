@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2'); // Ojo: Tendrás que pasarle la conexión 'db' a este archivo o crearla aquí.
-
+/*
 // Configurar la conexión a MySQL (se recomienda mover esto a una capa de servicio/db)
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'asistencias_escolares'
-});
+}); */
+
+module.exports = (db) => {
 
 // Todas las rutas relacionadas con alumnos van aquí
 router.get('/anios', (req, res) => {
@@ -19,10 +20,10 @@ router.get('/anios', (req, res) => {
       console.error('Error al obtener años de la DB:', err);
       return res.status(500).json({ error: 'Error al obtener años: ' + err.message });
     }
-    const años = results.map(row => row.turno);
-    res.json(años);
+    const anios = results.map(row => row.turno);
+    res.json(anios);
   });
-});
+}); 
 
 router.get('/estudiantes/:turno', (req, res) => {
   // Lógica para obtener estudiantes (copiada de servidor.js)
@@ -48,7 +49,8 @@ router.get('/asistencias/estudiante/:id_estudiante', (req, res) => {
     }
     res.json(results);
   });
-});
+}); 
 
 // Exportar el router
-module.exports = router;
+return router;
+};

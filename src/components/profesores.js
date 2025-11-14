@@ -62,14 +62,10 @@ const Profesores = () => {
     if (loading) return <div className="loading">Cargando profesores...</div>;
 
     return (
-        <div className="profesores-container">
-            {error && <div className="error">{error}</div>} 
-
+        <div>
             <p className="filtros">Profesor</p> 
-            <div className="select-container"> 
-                <select 
-                    id="profesor-select" 
-                    value={selectedProfesorId} 
+            <div> 
+                <select id="profesor-select" value={selectedProfesorId} 
                     onChange={handleProfesorChange}
                     className="select"
                 >
@@ -86,15 +82,14 @@ const Profesores = () => {
             </div>
             
             {selectedProfesorId && (
-                <div className="asistencias-resultado">
-                    
+                <div>
                     <p className="filtros">Estado</p>
 
                     {asistenciasLoading ? (
                         <p>Cargando asistencias...</p>
                     ) : (
                         asistencias.length > 0 ? (
-                            <div className="lista-asistencias">
+                            <div>
                                 {asistencias.map((a, index) => (
                                     <p key={index}>
                                         Día {index + 1}: <strong>{a.estado}</strong>

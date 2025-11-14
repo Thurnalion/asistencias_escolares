@@ -59,4 +59,6 @@
 .select{
   width: 13vw;
   text-align: center;
+  outline: none;
+  color: black;
 }

@@ -11,7 +11,7 @@ function Alumnos() {
 
   // useEffect para obtener la lista de años disponibles al cargar el componente
   useEffect(() => {
-    axios.get('http://localhost:5000/anios')
+    axios.get('http://localhost:5000/alumnos/anios')
       .then((response) => {
         console.log('Alumnos.js: Años disponibles recibidos:', response.data);
         setAñosDisponibles(response.data);
@@ -24,7 +24,7 @@ function Alumnos() {
   // useEffect para obtener estudiantes cuando el 'turno' cambia
   useEffect(() => {
     if (turno) {
-      axios.get(`http://localhost:5000/estudiantes/${turno}`)
+      axios.get(`http://localhost:5000/alumnos/estudiantes/${turno}`)
         .then((response) => {
           console.log('Alumnos.js: Estudiantes recibidos:', response.data);
           setEstudiantes(response.data);
@@ -48,7 +48,7 @@ function Alumnos() {
       const idEstudiante = parseInt(selectedEstudiante);
       console.log('Alumnos.js: Valor de selectedEstudiante:', selectedEstudiante);
       console.log('Alumnos.js: Valor de idEstudiante:', idEstudiante);
-      axios.get(`http://localhost:5000/asistencias/estudiante/${idEstudiante}`)
+      axios.get(`http://localhost:5000/alumnos/asistencias/estudiante/${idEstudiante}`)
         .then((response) => {
           console.log('Alumnos.js: Asistencias recibidas:', response.data);
           setAsistencias(response.data);

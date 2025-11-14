@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
 
+
 // Importados los nuevos componentes a crear
 import Alumnos from './components/alumnos';
 import Profesores from './components/profesores';
 import Clases from './components/clases';
+
 
 function App() {
   return (

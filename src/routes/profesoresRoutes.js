@@ -1,22 +1,7 @@
 const express = require('express');
 const router = express.Router(); 
-const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'asistencias_escolares' 
-});
-
-// Prueba la conexión al iniciar el router
-db.connect((err) => {
-    if (err) {
-        console.error('Error de conexión a DB en PROFESORES ROUTER:', err);
-    } else {
-        console.log('Profesores Router conectado a MySQL.');
-    }
-});
+module.exports = (db) => {
 
 // RUTA 1: GET /profesores/todos
 router.get('/todos', (req, res) => {
@@ -26,10 +11,10 @@ router.get('/todos', (req, res) => {
         if (err) {
             console.error('Error al obtener la lista de profesores:', err);
             return res.status(500).json({ error: 'Error al obtener la lista de profesores.' });
-        }
+        } //devuelve un array con objetos id_profesor, nombre, apellido
         res.status(200).json(results);
     });
-});
+}); 
 
 // RUTA 2: GET /profesores/:id/asistencias
 router.get('/:id/asistencias', (req, res) => {
@@ -46,5 +31,6 @@ router.get('/:id/asistencias', (req, res) => {
         res.status(200).json(results);
     });
 });
-
-module.exports = router;
+// Exportar el router
+return router;
+};
